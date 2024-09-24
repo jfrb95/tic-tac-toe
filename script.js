@@ -29,6 +29,32 @@ const GLOBAL = function(){
             }))
         }
 
+        function checkForWinner() {
+            let winner;
+            checkRows();
+            if (!winner) {
+                checkColumns();
+            }
+
+            if (!winner) {
+                checkDiagonals();
+            }
+            
+            return winner;
+
+            function checkRows() {
+                
+            }
+
+            function checkColumns() {
+
+            }
+
+            function checkDiagonals() {
+
+            }
+        }
+
         return {
             getBoard,
             placeMarker,
@@ -81,6 +107,11 @@ const GLOBAL = function(){
 
         function getActivePlayer() {
             return activePlayer;
+        }  
+
+        function playRound(row, column) {
+            log(`It is ${activePlayer}'s turn`);
+
         }
 
         return {
