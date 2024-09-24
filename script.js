@@ -53,6 +53,41 @@ const GLOBAL = function(){
         };
     }
 
+    function Player(name, token) {
+        return {
+            name,
+            token
+        };
+    }
+
+    function GameCoordinator() {
+        const gameboard = Gameboard();
+        const players = [
+            Player("player1", "X"),
+            Player("player2", "O")
+        ];
+
+        let turnCount = 0;
+
+        let activePlayer = players[0];
+
+        function incrementTurnCount() {
+            turnCount += 1;
+        }
+
+        function switchPlayer(turn) {
+            activePlayer = players[turn % 2];
+        }
+
+        function getActivePlayer() {
+            return activePlayer;
+        }
+
+        return {
+
+        };
+    }
+
     return {
         Gameboard,
         Square,
