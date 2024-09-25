@@ -1,7 +1,7 @@
 const GLOBAL = function(){
     const log = console.log;
 
-    function Gameboard() {
+    function Gameboard(testBoard=false) {
         const rows = 3;
         const columns = 3;
         const board = [];
@@ -11,6 +11,10 @@ const GLOBAL = function(){
             for (let j = 0; j < columns; ++j) {
                 board[i].push(Square());
             }
+        }
+        
+        if (testBoard) {
+            board = testBoard;
         }
 
         function getBoard() { 
@@ -31,39 +35,65 @@ const GLOBAL = function(){
 
         function checkForWinner() {
             let winner;
-            checkRows();
-            if (!winner) {
-                checkColumns();
+
+            for (const row of board) {
+                if (row[0].getValue() &&
+                    row[0].getValue() === row[1].getValue() &&
+                    row[1].getValue() === row[2].getValue()) 
+                {
+                    log(row[0].getValue(), row[1].getValue(), row[2].getValue())
+                    winner = row[0].getValue()
+                    break;
+                }
             }
 
             if (!winner) {
-                checkDiagonals();
+                for (let i = 0; i < board[0].length; ++i) {
+                    if (board[0][i].getValue() &&
+                        board[0][i].getValue() === board[1][i].getValue() &&
+                        board[1][i].getValue() === board[2][i].getValue()) 
+                        {
+                            winner = board[0][i].getValue();
+                            break;
+                    }
+                }
             }
-            
+
+            if (!winner) {
+                if (board[0][0].getValue() &&
+                    board[0][0].getValue() === board[1][1].getValue() &&
+                    board[1][1].getValue() === board[2][2].getValue())
+                    {
+                        winner = board[0][0].getValue();
+                    }                
+            }
+
+            if (!winner) {
+                if (board[0][2].getValue() &&
+                    board[0][2].getValue() === board[1][1].getValue() &&
+                    board[1][1].getValue() === board[2][0].getValue())
+                    {
+                        winner = board[0][2].getValue();
+                    }
+            }
+
             return winner;
-
-            function checkRows() {
-                
-            }
-
-            function checkColumns() {
-
-            }
-
-            function checkDiagonals() {
-
-            }
         }
 
         return {
             getBoard,
             placeMarker,
-            printBoard
+            printBoard,
+            checkForWinner
         };
     }
 
-    function Square() {
+    function Square(testVal=false) {
         let value = null;
+
+        if (testVal) {
+            value = testVal;
+        }
 
         function setValue(val) {
             value = val;
