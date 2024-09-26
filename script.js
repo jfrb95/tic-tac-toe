@@ -35,15 +35,16 @@ const GLOBAL = function(){
         }
 
         function checkForWinner() {
-            let winner;
+            let winner = false;
 
             for (const row of board) {
                 if (row[0].getValue() &&
                     row[0].getValue() === row[1].getValue() &&
                     row[1].getValue() === row[2].getValue()) 
                 {
-                    log(row[0].getValue(), row[1].getValue(), row[2].getValue())
-                    winner = row[0].getValue()
+                    log(row[0].getValue(), row[1].getValue(), row[2].getValue());
+                    winner = row[0].getValue();
+                    log("won by row");
                     break;
                 }
             }
@@ -55,6 +56,8 @@ const GLOBAL = function(){
                         board[1][i].getValue() === board[2][i].getValue()) 
                         {
                             winner = board[0][i].getValue();
+                            log(board[0][i].getValue(), board[1][i].getValue(), board[2][i].getValue());
+                            log("won by col");
                             break;
                     }
                 }
@@ -66,6 +69,8 @@ const GLOBAL = function(){
                     board[1][1].getValue() === board[2][2].getValue())
                     {
                         winner = board[0][0].getValue();
+                        log(board[0][0].getValue(), board[1][1].getValue(), board[2][2].getValue());
+                        log("won by diag1");
                     }                
             }
 
@@ -75,6 +80,8 @@ const GLOBAL = function(){
                     board[1][1].getValue() === board[2][0].getValue())
                     {
                         winner = board[0][2].getValue();
+                        log(board[0][2].getValue(), board[1][1].getValue(), board[2][0].getValue());
+                        log("won by diag2");
                     }
             }
 
@@ -140,9 +147,23 @@ const GLOBAL = function(){
             return activePlayer;
         }  
 
-        function playRound(row, column) {
-            log(`It is ${activePlayer}'s turn`);
+        function printNewRound() {
+            gameboard.printBoard();
+            log(`Turn ${turnCount}. It is ${getActivePlayer().name}'s turn`)
+        }
 
+        function playRound(row, column) {
+            log(`${activePlayer} has made a move`);
+            gameboard.placeMarker(row, column, getActivePlayer().token);
+            
+            let winner = gameboard.checkForWinner()
+            if (winner) {
+                return winner;
+            }
+
+            incrementTurnCount();
+            switchPlayer(turnCount);
+            printNewRound();
         }
 
         return {
