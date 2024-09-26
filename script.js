@@ -4,12 +4,13 @@ const GLOBAL = function(){
     function Gameboard(testBoard=false) {
         const rows = 3;
         const columns = 3;
-        const board = [];
+        //CHANGE TO CONST
+        let board = [];
 
         for (let i = 0; i < rows; ++i) {
             board[i] = [];
             for (let j = 0; j < columns; ++j) {
-                board[i].push(Square());
+                board[i].push(Square('X'));
             }
         }
         
@@ -149,8 +150,60 @@ const GLOBAL = function(){
         };
     }
 
+    //TEST BOARDS
+
+    const rowboard = [];
+    for (let i = 0; i < 2; ++i) {
+        rowboard[i] = [];
+        for (let j = 0; j < 3; ++j) {
+            rowboard[i].push(Square(null));
+        }
+    }
+    rowboard.push([Square('X'), Square('X'), Square('X')])
+
+    const colboard = [];
+    for (let i = 0; i < 3; ++i) {
+        colboard[i] = [];
+        for (let j = 0; j < 3; ++j) {
+            if (j === 1) {
+                colboard[i].push(Square('X'));
+            } else {
+                colboard[i].push(Square(null));
+            }
+        }
+    }
+
+    const diagboard1 = [];
+    for (let i = 0; i < 3; ++i) {
+        diagboard1[i] = [];
+        for (let j = 0; j < 3; ++j) {
+            if (i === j) {
+                diagboard1[i].push(Square('X'));
+            } else {
+                diagboard1[i].push(Square(null));
+            }
+        }
+    }
+
+    const diagboard2 = [];
+    for (let i = 0; i < 3; ++i) {
+        diagboard2[i] = [];
+        for (let j = 0; j < 3; ++j) {
+            if (i + j === 2) {
+                diagboard2[i].push(Square('X'));
+            } else {
+                diagboard2[i].push(Square(null));
+            }
+        }
+    }
+
     return {
         Gameboard,
         Square,
+        rowboard,
+        colboard,
+        diagboard1,
+        diagboard2
+        
     }
 }();
