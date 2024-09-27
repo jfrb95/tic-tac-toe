@@ -10,7 +10,7 @@ const GLOBAL = function(){
         for (let i = 0; i < rows; ++i) {
             board[i] = [];
             for (let j = 0; j < columns; ++j) {
-                board[i].push(Square('X'));
+                board[i].push(Square());
             }
         }
         
@@ -22,16 +22,25 @@ const GLOBAL = function(){
             return board;
         }
 
+        function checkSquareAvailability(row, column) {
+            if (!board[row][column].getValue()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         function placeMarker(row, column, naughtOrCross) {
-            board[row][column].setValue(naughtOrCross);
+            const targetSquare = board[row][column];
+            targetSquare.setValue(naughtOrCross);
         }
 
         function printBoard() {
-            log(board.map((row) => {
-                return row.map((square) => {
+            board.map((row) => {
+                log(row.map((square) => {
                     return square.getValue();
-                })
-            }))
+                }))
+            })
         }
 
         function checkForWinner() {
@@ -92,7 +101,8 @@ const GLOBAL = function(){
             getBoard,
             placeMarker,
             printBoard,
-            checkForWinner
+            checkForWinner,
+            checkSquareAvailability
         };
     }
 
@@ -154,20 +164,30 @@ const GLOBAL = function(){
 
         function playRound(row, column) {
             log(`${activePlayer} has made a move`);
-            gameboard.placeMarker(row, column, getActivePlayer().token);
-            
-            let winner = gameboard.checkForWinner()
-            if (winner) {
-                return winner;
-            }
 
-            incrementTurnCount();
-            switchPlayer(turnCount);
-            printNewRound();
+            if (gameboard.checkSquareAvailability(row, column)) {
+                gameboard.placeMarker(row, column, getActivePlayer().token);
+                
+                let winner = gameboard.checkForWinner()
+                
+                if (winner) {
+                    return winner;
+                }
+
+                incrementTurnCount();
+                switchPlayer(turnCount);
+                printNewRound();
+            } else {
+                log("That square already has a marker, please try a different square.")
+            }
+            
+            
         }
 
         return {
-
+            playRound,
+            getActivePlayer,
+            getBoard: gameboard.getBoard
         };
     }
 
@@ -221,6 +241,7 @@ const GLOBAL = function(){
     return {
         Gameboard,
         Square,
+        GameCoordinator,
         rowboard,
         colboard,
         diagboard1,
