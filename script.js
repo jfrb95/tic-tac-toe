@@ -204,19 +204,34 @@ const GLOBAL = function(){
 
             const board = game.getBoard();
 
-            board.forEach((row) => {
-                row.forEach((square) => {
+            board.forEach((row, i) => {
+                row.forEach((square, j) => {
                     const button = document.createElement("button");
+                    button.dataset.coordinates = `${i}${j}`;
                     button.textContent = square.getValue();
                     boardDisplay.appendChild(button);
                 })
             })
         }
 
+        boardDisplay.addEventListener("click", (event) => {
+            const coordinates = event.target.dataset.coordinates;
+            if (coordinates) {
+                game.playRound(coordinates[0], coordinates[1]);
+                updateTextDisplay("make this text display the round number and active player");
+                updateBoardDisplay();
+            }
+        });
+
+        updateTextDisplay("make this text display the round number and active player");
+        updateBoardDisplay();
+
         return {
             updateBoardDisplay
         }
     }
+
+    ScreenController();
 
     //TEST BOARDS
 
