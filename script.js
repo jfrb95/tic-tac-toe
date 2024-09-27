@@ -180,8 +180,6 @@ const GLOBAL = function(){
             } else {
                 log("That square already has a marker, please try a different square.")
             }
-            
-            
         }
 
         return {
@@ -189,6 +187,35 @@ const GLOBAL = function(){
             getActivePlayer,
             getBoard: gameboard.getBoard
         };
+    }
+
+    function ScreenController() {
+        const game = GameCoordinator();
+
+        const textDisplay = document.querySelector(".text-display");
+        const boardDisplay = document.querySelector(".board");
+
+        function updateTextDisplay(str) {
+            textDisplay.textContent = str;
+        }
+
+        function updateBoardDisplay() {
+            boardDisplay.textContent = "";
+
+            const board = game.getBoard();
+
+            board.forEach((row) => {
+                row.forEach((square) => {
+                    const button = document.createElement("button");
+                    button.textContent = square.getValue();
+                    boardDisplay.appendChild(button);
+                })
+            })
+        }
+
+        return {
+            updateBoardDisplay
+        }
     }
 
     //TEST BOARDS
@@ -242,10 +269,10 @@ const GLOBAL = function(){
         Gameboard,
         Square,
         GameCoordinator,
+        ScreenController,
         rowboard,
         colboard,
         diagboard1,
         diagboard2
-        
     }
 }();
