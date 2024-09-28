@@ -155,7 +155,11 @@ const GLOBAL = function(){
 
         function getActivePlayer() {
             return activePlayer;
-        }  
+        } 
+
+        function getTurnCount() {
+            return turnCount;
+        }
 
         function printNewRound() {
             gameboard.printBoard();
@@ -185,7 +189,8 @@ const GLOBAL = function(){
         return {
             playRound,
             getActivePlayer,
-            getBoard: gameboard.getBoard
+            getBoard: gameboard.getBoard,
+            getTurnCount
         };
     }
 
@@ -195,8 +200,8 @@ const GLOBAL = function(){
         const textDisplay = document.querySelector(".text-display");
         const boardDisplay = document.querySelector(".board");
 
-        function updateTextDisplay(str) {
-            textDisplay.textContent = str;
+        function updateTextDisplay() {
+            textDisplay.textContent = `Turn ${game.getTurnCount()}. It is ${game.getActivePlayer().name}'s turn.`;
         }
 
         function updateBoardDisplay() {
@@ -218,12 +223,12 @@ const GLOBAL = function(){
             const coordinates = event.target.dataset.coordinates;
             if (coordinates) {
                 game.playRound(coordinates[0], coordinates[1]);
-                updateTextDisplay("UPDATED: make this text display the round number and active player");
+                updateTextDisplay();
                 updateBoardDisplay();
             }
         });
 
-        updateTextDisplay("make this text display the round number and active player");
+        updateTextDisplay();
         updateBoardDisplay();
 
         return {
