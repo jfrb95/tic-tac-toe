@@ -1,0 +1,87 @@
+/*RESET*/
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+* {
+    margin: 0;
+}
+body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+}
+input, button, textarea, select {
+    font: inherit;
+    font-size: 100%;
+}
+p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+}
+#root, #__next {
+    isolation: isolate;
+}
+
+input,
+textarea,
+select,
+button {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+fieldset {
+    position: relative;
+}
+
+legend {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+input {
+    appearance: none;
+}
+
+ul {
+    padding: 0px;
+}
+
+li {
+    list-style-type: none;
+}
+
+/**/
+
+:root {
+    --board-gutter-size: 5px;
+    --square-size: 130px;
+    --marker-font-size: 95px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, var(--square-size));
+    grid-template-rows: repeat(3, var(--square-size));
+    gap: var(--board-gutter-size);
+    background-color: black;
+}
+
+.board button {
+    border: none;
+    font-size: var(--marker-font-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

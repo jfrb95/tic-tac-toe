@@ -218,7 +218,7 @@ const GLOBAL = function(){
             const coordinates = event.target.dataset.coordinates;
             if (coordinates) {
                 game.playRound(coordinates[0], coordinates[1]);
-                updateTextDisplay("make this text display the round number and active player");
+                updateTextDisplay("UPDATED: make this text display the round number and active player");
                 updateBoardDisplay();
             }
         });
@@ -227,7 +227,6 @@ const GLOBAL = function(){
         updateBoardDisplay();
 
         return {
-            updateBoardDisplay
         }
     }
 
