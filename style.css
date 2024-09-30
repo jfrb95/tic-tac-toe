@@ -70,6 +70,10 @@ li {
     align-items: center;
 }
 
+dialog.end-game {
+    margin: auto;
+}
+
 .board {
     display: grid;
     grid-template-columns: repeat(3, var(--square-size));

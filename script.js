@@ -1,6 +1,16 @@
 const GLOBAL = function(){
     const log = console.log;
 
+    const endGameDialog = document.querySelector(".end-game");
+    const endGameMessage = document.querySelector(".end-game p")
+    const resetGameButton = document.querySelector(".end-game button");
+    const textDisplay = document.querySelector(".text-display");
+    const boardDisplay = document.querySelector(".board");
+
+    resetGameButton.addEventListener("click", () => {
+        ScreenController();
+    })
+
     function Gameboard(testBoard=false) {
         const rows = 3;
         const columns = 3;
@@ -167,7 +177,7 @@ const GLOBAL = function(){
         }
 
         function playRound(row, column) {
-            log(`${activePlayer} has made a move`);
+            log(`${getActivePlayer().name} has made a move`);
 
             if (gameboard.checkSquareAvailability(row, column)) {
                 gameboard.placeMarker(row, column, getActivePlayer().token);
@@ -175,7 +185,8 @@ const GLOBAL = function(){
                 let winner = gameboard.checkForWinner()
                 
                 if (winner) {
-                    return winner;
+                    endGameMessage.textContent = `${getActivePlayer().name} has won with three ${getActivePlayer().token}s in a row!`
+                    endGameDialog.showModal();
                 }
 
                 incrementTurnCount();
@@ -196,9 +207,6 @@ const GLOBAL = function(){
 
     function ScreenController() {
         const game = GameCoordinator();
-
-        const textDisplay = document.querySelector(".text-display");
-        const boardDisplay = document.querySelector(".board");
 
         function updateTextDisplay() {
             textDisplay.textContent = `Turn ${game.getTurnCount()}. It is ${game.getActivePlayer().name}'s turn.`;
@@ -237,61 +245,10 @@ const GLOBAL = function(){
 
     ScreenController();
 
-    //TEST BOARDS
-
-    const rowboard = [];
-    for (let i = 0; i < 2; ++i) {
-        rowboard[i] = [];
-        for (let j = 0; j < 3; ++j) {
-            rowboard[i].push(Square(null));
-        }
-    }
-    rowboard.push([Square('X'), Square('X'), Square('X')])
-
-    const colboard = [];
-    for (let i = 0; i < 3; ++i) {
-        colboard[i] = [];
-        for (let j = 0; j < 3; ++j) {
-            if (j === 1) {
-                colboard[i].push(Square('X'));
-            } else {
-                colboard[i].push(Square(null));
-            }
-        }
-    }
-
-    const diagboard1 = [];
-    for (let i = 0; i < 3; ++i) {
-        diagboard1[i] = [];
-        for (let j = 0; j < 3; ++j) {
-            if (i === j) {
-                diagboard1[i].push(Square('X'));
-            } else {
-                diagboard1[i].push(Square(null));
-            }
-        }
-    }
-
-    const diagboard2 = [];
-    for (let i = 0; i < 3; ++i) {
-        diagboard2[i] = [];
-        for (let j = 0; j < 3; ++j) {
-            if (i + j === 2) {
-                diagboard2[i].push(Square('X'));
-            } else {
-                diagboard2[i].push(Square(null));
-            }
-        }
-    }
-
     return {
         Gameboard,
         Square,
         GameCoordinator,
         ScreenController,
-        rowboard,
-        colboard,
-        diagboard1,
-        diagboard2
     }
 }();
