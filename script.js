@@ -7,6 +7,8 @@ const GLOBAL = function(){
     const textDisplay = document.querySelector(".text-display");
     const boardDisplay = document.querySelector(".board");
 
+    //MAKE DIALOG POP UP WHEN ALL SQUARES ARE FILLED
+
     resetGameButton.addEventListener("click", () => {
         screen.newGame();
     })
@@ -166,7 +168,6 @@ const GLOBAL = function(){
 
         function printNewRound() {
             gameboard.printBoard();
-            log(`Turn ${turnCount}. It is ${getActivePlayer().name}'s turn`)
         }
 
         function playRound(row, column) {
@@ -177,10 +178,11 @@ const GLOBAL = function(){
                 
                 let winner = gameboard.checkForWinner()
                 
-                log("before winner check");
                 if (winner) {
-                    log("playRound winner true");
                     endGameMessage.textContent = `${getActivePlayer().name} has won with three ${getActivePlayer().token}s in a row!`
+                    endGameDialog.showModal();
+                } else if (turnCount === 8) {
+                    endGameMessage.textContent = `The round has ended in a tie!`
                     endGameDialog.showModal();
                 }
 
@@ -209,15 +211,9 @@ const GLOBAL = function(){
         }
 
         function updateBoardDisplay() {
-            boardDisplay.textContent = "";
-            /*
-            const newBoard = document.createElement("div");
-            newBoard.classList.add("board");
-            boardDisplay.parentNode.replaceChild(newBoard, boardDisplay);
-            */
+            boardDisplay.innerHTML = "";
 
             const board = game.getBoard();
-            log(board);
 
             board.forEach((row, i) => {
                 row.forEach((square, j) => {
@@ -237,8 +233,6 @@ const GLOBAL = function(){
 
         boardDisplay.addEventListener("click", (event) => {
             const coordinates = event.target.dataset.coordinates;
-            log("event.target", event.target);
-            log("event.target.dataset.coordinates", event.target.dataset.coordinates);
             if (coordinates) {
                 game.playRound(coordinates[0], coordinates[1]);
                 updateTextDisplay();
