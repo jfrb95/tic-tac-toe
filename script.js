@@ -2,12 +2,14 @@ const GLOBAL = function(){
     const log = console.log;
 
     const endGameDialog = document.querySelector(".end-game");
-    const endGameMessage = document.querySelector(".end-game p")
+    const endGameMessage = document.querySelector(".end-game p");
     const resetGameButton = document.querySelector(".end-game button");
+    const invalidSquareDialog = document.querySelector(".invalid-square");
+    const invalidSquareMessage = document.querySelector(".invalid-square p");
+    const invalidConfirmButton = document.querySelector(".invalid-square button");
     const textDisplay = document.querySelector(".text-display");
     const boardDisplay = document.querySelector(".board");
-
-    //MAKE DIALOG POP UP WHEN ALL SQUARES ARE FILLED
+    
 
     resetGameButton.addEventListener("click", () => {
         screen.newGame();
@@ -176,13 +178,13 @@ const GLOBAL = function(){
             if (gameboard.checkSquareAvailability(row, column)) {
                 gameboard.placeMarker(row, column, getActivePlayer().token);
                 
-                let winner = gameboard.checkForWinner()
+                let winner = gameboard.checkForWinner();
                 
                 if (winner) {
-                    endGameMessage.textContent = `${getActivePlayer().name} has won with three ${getActivePlayer().token}s in a row!`
+                    endGameMessage.textContent = `${getActivePlayer().name} has won with three ${getActivePlayer().token}s in a row!`;
                     endGameDialog.showModal();
                 } else if (turnCount === 8) {
-                    endGameMessage.textContent = `The round has ended in a tie!`
+                    endGameMessage.textContent = `The round has ended in a tie!`;
                     endGameDialog.showModal();
                 }
 
@@ -190,7 +192,8 @@ const GLOBAL = function(){
                 switchPlayer(turnCount);
                 printNewRound();
             } else {
-                log("That square already has a marker, please try a different square.")
+                invalidSquareMessage.textContent = "That square already has been taken, please try a different square.";
+                invalidSquareDialog.showModal();
             }
         }
 
