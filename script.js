@@ -8,24 +8,19 @@ const GLOBAL = function(){
     const boardDisplay = document.querySelector(".board");
 
     resetGameButton.addEventListener("click", () => {
-        ScreenController();
+        screen.newGame();
     })
 
-    function Gameboard(testBoard=false) {
+    function Gameboard() {
         const rows = 3;
         const columns = 3;
-        //CHANGE TO CONST
-        let board = [];
+        const board = [];
 
         for (let i = 0; i < rows; ++i) {
             board[i] = [];
             for (let j = 0; j < columns; ++j) {
                 board[i].push(Square());
             }
-        }
-        
-        if (testBoard) {
-            board = testBoard;
         }
 
         function getBoard() { 
@@ -104,6 +99,8 @@ const GLOBAL = function(){
                     }
             }
 
+
+            log(winner);
             return winner;
         }
 
@@ -116,12 +113,8 @@ const GLOBAL = function(){
         };
     }
 
-    function Square(testVal=false) {
+    function Square() {
         let value = null;
-
-        if (testVal) {
-            value = testVal;
-        }
 
         function setValue(val) {
             value = val;
@@ -184,7 +177,9 @@ const GLOBAL = function(){
                 
                 let winner = gameboard.checkForWinner()
                 
+                log("before winner check");
                 if (winner) {
+                    log("playRound winner true");
                     endGameMessage.textContent = `${getActivePlayer().name} has won with three ${getActivePlayer().token}s in a row!`
                     endGameDialog.showModal();
                 }
@@ -201,12 +196,13 @@ const GLOBAL = function(){
             playRound,
             getActivePlayer,
             getBoard: gameboard.getBoard,
+            printBoard: gameboard.printBoard,
             getTurnCount
         };
     }
 
     function ScreenController() {
-        const game = GameCoordinator();
+        let game = GameCoordinator();
 
         function updateTextDisplay() {
             textDisplay.textContent = `Turn ${game.getTurnCount()}. It is ${game.getActivePlayer().name}'s turn.`;
@@ -214,8 +210,14 @@ const GLOBAL = function(){
 
         function updateBoardDisplay() {
             boardDisplay.textContent = "";
+            /*
+            const newBoard = document.createElement("div");
+            newBoard.classList.add("board");
+            boardDisplay.parentNode.replaceChild(newBoard, boardDisplay);
+            */
 
             const board = game.getBoard();
+            log(board);
 
             board.forEach((row, i) => {
                 row.forEach((square, j) => {
@@ -227,8 +229,16 @@ const GLOBAL = function(){
             })
         }
 
+        function newGame() {
+            game = GameCoordinator();
+            updateTextDisplay();
+            updateBoardDisplay();
+        }
+
         boardDisplay.addEventListener("click", (event) => {
             const coordinates = event.target.dataset.coordinates;
+            log("event.target", event.target);
+            log("event.target.dataset.coordinates", event.target.dataset.coordinates);
             if (coordinates) {
                 game.playRound(coordinates[0], coordinates[1]);
                 updateTextDisplay();
@@ -240,10 +250,11 @@ const GLOBAL = function(){
         updateBoardDisplay();
 
         return {
+            newGame
         }
     }
 
-    ScreenController();
+    const screen = ScreenController();
 
     return {
         Gameboard,
